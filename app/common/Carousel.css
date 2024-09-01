@@ -1,0 +1,28 @@
+.carousel {
+    width: 80%;
+    height: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: auto;
+    margin-left: 7%;
+}
+
+.carousel .anticon {
+    cursor: pointer;
+    margin: 20px
+}
+.carousel_images {
+    width: 90%;
+}
+
+@media screen and (max-width: 600px) {
+    .carousel .anticon {
+        display: none
+    }
+
+    .carousel {
+        width: 100%;
+    }
+}

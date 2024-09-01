@@ -1,0 +1,68 @@
+.contact {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 90vh;
+    margin: 10vh auto;
+    color: #4D4D4D !important;
+}
+
+.contact img {
+    width: 50vh;
+    height: 50vh;
+}
+
+.contact > div {
+    width: 100%;
+}
+
+.contact input,textarea,button,span {
+    border-radius: unset !important;
+    color: #4D4D4D !important;
+}
+
+@media screen and (max-width: 1200px) {
+    .contact {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .contact {
+        height: 80vh;
+        overflow: auto;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .contact {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        height: 90vh;
+        margin: auto;
+    }
+    .contact > div {
+        width: 60%;
+        margin-top: 30px;
+    }
+
+    .contact img {
+        width: 80%;
+        height: unset;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .contact img {
+        width: 90%;
+    }
+    .contact > div {
+        width: 80%;
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,70 @@
+.toolbar {
+    height: 10vh;
+    min-height: 10vh;
+    max-width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-transform: uppercase;
+    padding: 0 20px 0 20px;
+    color: #4D4D4D;
+    z-index: 1;
+}
+
+.toolbar_left {
+    width: 50%;
+    align-items: center;
+    display: flex;
+}
+
+.toolbar_right {
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.toolbar svg {
+    cursor: pointer;
+}
+
+.dropdown_link {
+    text-transform: uppercase;
+}
+
+.toster {
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .toolbar_right {
+        display: none;
+    }
+
+    .toster {
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}
+
+.menu_wrapper {
+    position: absolute;
+    margin-top: 9vh;
+    width: 100%;
+    height: 70vh;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF;
+}
+
+.menu_wrapper ul {
+    border-inline-end: unset !important;
+}
+
+.menu_wrapper > div {
+    border: 1px solid red;;
+}
