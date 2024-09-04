@@ -45,7 +45,7 @@ const Menu = ({
         <div className='menu_wrapper'>
           <AntMenu
             onClick={onClick}
-            style={{ width: '40%' }}
+            style={{ width: '50%' }}
             mode="inline"
             items={[
               getItems(collectionNames, 'collections'),

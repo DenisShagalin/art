@@ -52,7 +52,7 @@
 .menu_wrapper {
     position: absolute;
     margin-top: 9vh;
-    width: 100%;
+    width: 90%;
     height: 70vh;
     z-index: 1;
     display: flex;

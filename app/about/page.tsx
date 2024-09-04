@@ -8,7 +8,7 @@ export default function About() {
       <Image src={about} alt='about' />
       <div>
         <p style={{ marginTop: 'unset' }}>
-          About me <br />
+        <strong>About me </strong><br />
           I am Anastasia Strauss and my paintings will help you
           discover your inner world. I paint in a free style and this
           allows me to express my feelings on canvas as much as
@@ -18,22 +18,24 @@ export default function About() {
           artwork and it will be unique.
         </p>
         <p>
-          <strong>Projekte und Veranstaltungen</strong><br />
-          2022 Projekt „Wien mit den Augen der ukrainischen
-          vertriebenen Künstlerinnen", Wien, Österreich<br/>
-          2022 - Ukrainischer Kunst- und Handwerksmarkt im
-          MQ, Wien, Österreich<br/>
-          2008 - 2.Diplom, Gesamtukrainischer Wettbewerb
-          für Lichtdesign, "Licht", Charkiw, Ukraine<br/>
-          2009 - Teilnehmer, Allukrainischer Wettbewerb für
-          Lichtdesign, "Licht", Charkiw, Ukraine
+          <strong>Projects and events</strong><br />
+          2023 - Charity auction of the "Mom + Me" foundation, Vienna, Austria<br />
+          2022 - Project "Vienna through the eyes of Ukrainian displaced artists", Vienna, Austria<br />
+          2022 - Ukrainian arts and crafts market in the MQ, Vienna, Austria<br />
+          2009 - Participant, All-Ukrainian competition for lighting design, "Light",
+          Kharkiv, Ukraine<br />
+          2008 - 2nd diploma, All-Ukrainian competition for lighting design, "Light",
+          Kharkiv, Ukraine
         </p>
         <p>
-          <strong>Persönliche Ausstellungen</strong><br />
-          2021 - "Colors of my summer" im Kunstraum BREWKI-Bar,
-          Charkiw, Ukraine<br />
-          2020 - "Rock Symphony" im Kunstraum BREWKI Bar,
-          Charkiw, Ukraine
+          <strong>Exhibitions</strong><br />
+          2024 – Solo-exhibition Gleis//Garten, Vienna, Austria<br />
+          2023 - “Bloom. Awakening”, Stable Gallery, Vienna, Austria<br />
+          2023 - “L’ESSENZZA DELLA BELLEZZA”, Alte Schieberkammer, Vienna,
+          Austria, Arthentico Gallery<br />
+          2022- “Insight of U”, TAITH Contemporary Gallery, Vienna, Austria<br />
+          2021 - "Colors of my summer" in the art space BREWKI-Bar, Kharkiv, Ukraine<br />
+          2020 - "Rock Symphony" in the art space BREWKI Bar, Kharkiv, Ukraine
         </p>
       </div>
     </div>

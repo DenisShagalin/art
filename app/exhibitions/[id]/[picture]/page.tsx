@@ -22,7 +22,7 @@ export default async function Picture({ params }: { params: { picture: string, i
     return null;
   }
 
-  const description = await getDescription(S3, `${entity}/${params.id}/${params.picture}/description.txt`);
+  const description = await getDescription(S3, `${entity}/${params.id}/${decodeURIComponent(params.picture)}/description.txt`);
 
   if (!description) {
     redirect(`/${entity}/${params.id}`);
@@ -32,7 +32,7 @@ export default async function Picture({ params }: { params: { picture: string, i
 
   const allFiles = await S3.send(new ListObjectsCommand({
     Bucket: process.env.AWS_BUCKET,
-    Prefix: `${entity}/${params.id}/${params.picture}`,
+    Prefix: `${entity}/${params.id}/${decodeURIComponent(params.picture)}`,
   }));
 
   const collectionImages: string[] = [];
