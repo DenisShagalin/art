@@ -5,8 +5,8 @@ clone repo and set env varibales
 ```
 export MY_EMAIL=
 export MY_PASSWORD=
-export AWS_KEY=
-export AWS_ACCESS_KEY=
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
 export AWS_BUCKET=
 export AWS_REGION=
 ```
