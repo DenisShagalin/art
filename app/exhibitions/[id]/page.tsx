@@ -1,4 +1,6 @@
 import { getDescription, getS3, getSignedUrl } from '@/app/utils/s3';
+import { ListObjectsCommand } from "@aws-sdk/client-s3";
+import { redirect } from 'next/navigation';
 import { Flex } from 'antd';
 import Link from 'next/link';
 import './index.css';
@@ -6,11 +8,7 @@ import './index.css';
 export default async function Collections({ params }: { params: { id: string } }) {
   const S3 = getS3();
 
-  const collection = await S3.listObjects({
-    Bucket: process.env.AWS_BUCKET || '',
-    Prefix: `exhibitions/${params.id}`
-  }).promise();
-
+  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `exhibitions/${params.id}` }));
   const collectionImages = [];
 
   for (let idx in collection.Contents) {
@@ -23,8 +21,16 @@ export default async function Collections({ params }: { params: { id: string } }
     }
   }
 
-  const description = await getDescription(S3, `exhibitions/${params.id}/description.txt`);
-  const textValues = description?.split('||') || [];
+  let textValues = [];
+
+  if (collectionImages.length!!) {
+    const description = await getDescription(S3, `exhibitions/${params.id}/description.txt`);
+    textValues = description?.split('||') || [];
+  }
+
+  if (!textValues.length && !collectionImages.length) {
+    redirect('/');
+  }
 
   return (
     <div className='images_wrapper'>

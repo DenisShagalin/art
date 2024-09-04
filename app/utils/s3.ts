@@ -1,12 +1,15 @@
-import AWS from 'aws-sdk';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl as awsSignedURL } from "@aws-sdk/s3-request-presigner";
 
 export const getS3 = () => {
-    AWS.config.update({
+    const S3 = new S3Client({
         region: process.env.AWS_REGION,
-        accessKeyId: process.env.AWS_KEY,
-        secretAccessKey: process.env.AWS_ACCESS_KEY
+        credentials: {
+            accessKeyId: process.env.AWS_ACCESS_KEY_ID as string,
+            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
+        },
     });
-    const S3 = new AWS.S3({ apiVersion: 'latest' });
+
     return S3;
 };
 
@@ -21,23 +24,22 @@ export const getImagesKeys = (data: Array<any> = []) => {
 };
 
 export const getSignedUrl = async (S3: any, key: string) => {
-    const params = {
+    const command = new GetObjectCommand({
         Bucket: process.env.AWS_BUCKET,
-        Key: key,
-        Expires: 3600 * 3,
-    };
-    return await S3.getSignedUrlPromise('getObject', params);
+        Key: key
+    });
+    return await awsSignedURL(S3, command, { expiresIn: 3600 * 2 });
 };
 
 export const getDescription = async (S3: any, path: string) => {
     try {
-        const descriptionFile = await S3.getObject({
+        const descriptionFile = await S3.send(new GetObjectCommand({
             Bucket: process.env.AWS_BUCKET || '',
             Key: path
-        }).promise();
-        return descriptionFile.Body?.toString();
+        }))
+        return await descriptionFile.Body.transformToString();
     } catch (e) {
-        console.log(e);
+        console.warn(`Warn: Description ${path} does not exist`);
         return '';
     }
 };

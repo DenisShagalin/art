@@ -1,4 +1,6 @@
 import { getDescription, getS3, getSignedUrl } from '@/app/utils/s3';
+import { ListObjectsCommand } from "@aws-sdk/client-s3";
+import { redirect } from 'next/navigation';
 import { Flex } from 'antd';
 import Link from 'next/link';
 import './index.css';
@@ -6,11 +8,7 @@ import './index.css';
 export default async function Collections({ params }: { params: { id: string } }) {
   const S3 = getS3();
 
-  const collection = await S3.listObjects({
-    Bucket: process.env.AWS_BUCKET || '',
-    Prefix: `collections/${params.id}`
-  }).promise();
-
+  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `collections/${params.id}` }));
   const collectionImages = [];
 
   for (let idx in collection.Contents) {
@@ -23,46 +21,22 @@ export default async function Collections({ params }: { params: { id: string } }
     }
   }
 
-  const description = await getDescription(S3, `collections/${params.id}/description.txt`);
-  const textValues = description?.split('||') || [];
+  let textValues = [];
+
+  if (collectionImages.length!!) {
+    const description = await getDescription(S3, `collections/${params.id}/description.txt`);
+    textValues = description?.split('||') || [];
+  }
+
+  if (!textValues.length && !collectionImages.length) {
+    redirect('/');
+  }
 
   return (
     <div className='images_wrapper'>
       {textValues[0] && <h3>{textValues[0]}</h3>}
       {textValues[1] && <p>{textValues[1]}</p>}
       <Flex gap='middle' wrap>
-        {collectionImages.map((image) => (
-          <div key={image.name} className='image_wrap'>
-            <Link href={`/collections/${params.id}/${image.name}`}>
-              <img src={image.url} style={{ width: '100%' }} />
-              <p className='img_description'>{image.name}</p>
-            </Link>
-          </div>
-        ))}
-        {collectionImages.map((image) => (
-          <div key={image.name} className='image_wrap'>
-            <Link href={`/collections/${params.id}/${image.name}`}>
-              <img src={image.url} style={{ width: '100%' }} />
-              <p className='img_description'>{image.name}</p>
-            </Link>
-          </div>
-        ))}
-        {collectionImages.map((image) => (
-          <div key={image.name} className='image_wrap'>
-            <Link href={`/collections/${params.id}/${image.name}`}>
-              <img src={image.url} style={{ width: '100%' }} />
-              <p className='img_description'>{image.name}</p>
-            </Link>
-          </div>
-        ))}
-        {collectionImages.map((image) => (
-          <div key={image.name} className='image_wrap'>
-            <Link href={`/collections/${params.id}/${image.name}`}>
-              <img src={image.url} style={{ width: '100%' }} />
-              <p className='img_description'>{image.name}</p>
-            </Link>
-          </div>
-        ))}
         {collectionImages.map((image) => (
           <div key={image.name} className='image_wrap'>
             <Link href={`/collections/${params.id}/${image.name}`}>

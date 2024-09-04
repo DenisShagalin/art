@@ -1,7 +1,9 @@
 import { getDescription, getS3, getSignedUrl } from '@/app/utils/s3';
 import { headers } from 'next/headers';
+import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import './index.css';
 import Carousel from '@/app/common/Carousel';
+import { redirect } from 'next/navigation';
 
 const getCurrentPath = () => {
   const headersList = headers();
@@ -23,14 +25,15 @@ export default async function Picture({ params }: { params: { picture: string, i
   const description = await getDescription(S3, `${entity}/${params.id}/${params.picture}/description.txt`);
 
   if (!description) {
+    redirect(`/${entity}/${params.id}`);
     return null;
   }
   const textValues = description?.split('||') || [];
 
-  const allFiles = await S3.listObjects({
-    Bucket: process.env.AWS_BUCKET || '',
+  const allFiles = await S3.send(new ListObjectsCommand({
+    Bucket: process.env.AWS_BUCKET,
     Prefix: `${entity}/${params.id}/${params.picture}`,
-  }).promise();
+  }));
 
   const collectionImages: string[] = [];
 

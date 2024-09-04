@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import './Toolbar.css';
+import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import { InstagramOutlined, MailOutlined } from '@ant-design/icons';
 import Dropdown from './Dropdown';
 import Menu from './Menu';
@@ -12,7 +13,7 @@ const getElemes = (names: string[], target: string) => (
   }))
 );
 
-const extractNames = (data: Array<any>) => {
+const extractNames = (data: Array<any> = []) => {
   const map: any = {};
   data.forEach((value) => {
     const path = value.Key.split('/');
@@ -26,13 +27,10 @@ const extractNames = (data: Array<any>) => {
 export default async function Toolbar() {
 
   const S3 = getS3();
-  // @ts-ignore
-  const collection = await S3.listObjectsV2({ Bucket: process.env.AWS_BUCKET, Prefix: 'collections' }).promise();
-  // @ts-ignore
+
+  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: 'collections' }));
+  const exhibition = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: 'exhibitions' }));
   const collectionNames = extractNames(collection.Contents);
-  // @ts-ignore
-  const exhibition = await S3.listObjectsV2({ Bucket: process.env.AWS_BUCKET, Prefix: 'exhibitions' }).promise();
-  // @ts-ignore
   const exhibitionNames = extractNames(exhibition.Contents);
 
   return (
