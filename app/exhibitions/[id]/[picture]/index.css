@@ -19,17 +19,13 @@
 
 .picture_wrap .carousel {
     width: 100%;
-    margin-left: unset !important;
+    margin-left: -1.5% !important;
 }
 
 
 @media screen and (max-width: 1200px) {
     .picture_wrap>div {
         width: 80%;
-    }
-
-    .picture_wrap .carousel {
-        margin-left: -1% !important;
     }
 }
 

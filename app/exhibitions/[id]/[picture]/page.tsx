@@ -1,38 +1,23 @@
 import { getDescription, getS3, getSignedUrl } from '@/app/utils/s3';
 import { redirect } from 'next/navigation';
 import { ListObjectsCommand } from "@aws-sdk/client-s3";
-import { headers } from 'next/headers';
 import './index.css';
 import Carousel from '@/app/common/Carousel';
 
-const getCurrentPath = () => {
-  const headersList = headers();
-  const domain = headersList.get('host') || "";
-  const fullUrl = headersList.get('referer') || "";
-  const protocol = headersList.get("x-forwarded-proto") || "";
-  return fullUrl.replace(`${protocol}://${domain}/`, '');
-};
-
 export default async function Picture({ params }: { params: { picture: string, id: string } }) {
-  const path = getCurrentPath();
   const S3 = getS3();
 
-  const entity = path.split('/')[0];
-  if (!entity) {
-    return null;
-  }
-
-  const description = await getDescription(S3, `${entity}/${params.id}/${decodeURIComponent(params.picture)}/description.txt`);
+  const description = await getDescription(S3, `exhibitions/${params.id}/${decodeURIComponent(params.picture)}/description.txt`);
 
   if (!description) {
-    redirect(`/${entity}/${params.id}`);
+    redirect(`/exhibitions/${params.id}`);
     return null;
   }
   const textValues = description?.split('||') || [];
 
   const allFiles = await S3.send(new ListObjectsCommand({
     Bucket: process.env.AWS_BUCKET,
-    Prefix: `${entity}/${params.id}/${decodeURIComponent(params.picture)}`,
+    Prefix: `exhibitions/${params.id}/${decodeURIComponent(params.picture)}`,
   }));
 
   const collectionImages: string[] = [];
