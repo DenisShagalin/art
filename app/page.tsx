@@ -2,6 +2,8 @@ import { ListObjectsCommand } from "@aws-sdk/client-s3";
 import Carousel from './common/Carousel';
 import { getS3, getImagesKeys, getSignedUrl } from './utils/s3';
 
+export const fetchCache = 'force-no-store';
+
 export default async function Home() {
 
   const S3 = getS3();
