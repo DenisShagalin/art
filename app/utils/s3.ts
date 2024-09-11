@@ -28,7 +28,7 @@ export const getSignedUrl = async (S3: any, key: string) => {
         Bucket: process.env.AWS_BUCKET,
         Key: key
     });
-    return await awsSignedURL(S3, command, { expiresIn: 3600 * 2 });
+    return await awsSignedURL(S3, command, { expiresIn: 3600 * 3 });
 };
 
 export const getDescription = async (S3: any, path: string) => {
