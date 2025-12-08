@@ -6,14 +6,16 @@ import Link from 'next/link';
 import './index.css';
 
 export default async function Collections({ params }: { params: { id: string } }) {
+  const { id } = await params;
   const S3 = getS3();
 
-  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `exhibitions/${params.id}` }));
+  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `exhibitions/${decodeURIComponent(id)}` }));
   const collectionImages = [];
 
   for (let idx in collection.Contents) {
     // @ts-ignore
     const item = collection.Contents[idx];
+    console.log(item, '---item')
     if (item.Key?.endsWith('title.jpg')) {
       const url = await getSignedUrl(S3, item.Key);
       const name = item.Key.split('/')[2]
@@ -24,7 +26,7 @@ export default async function Collections({ params }: { params: { id: string } }
   let textValues = [];
 
   if (collectionImages.length!!) {
-    const description = await getDescription(S3, `exhibitions/${params.id}/description.txt`);
+    const description = await getDescription(S3, `exhibitions/${decodeURIComponent(id)}/description.txt`);
     textValues = description?.split('||') || [];
   }
 
@@ -39,7 +41,7 @@ export default async function Collections({ params }: { params: { id: string } }
       <Flex gap='middle' wrap>
         {collectionImages.map((image) => (
           <div key={image.name} className='image_wrap'>
-            <Link href={`/exhibitions/${params.id}/${image.name}`}>
+            <Link href={`/exhibitions/${id}/${image.name}`}>
               <img src={image.url} style={{ width: '100%' }} />
               <p className='img_description'>{image.name}</p>
             </Link>

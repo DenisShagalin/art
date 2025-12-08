@@ -7,17 +7,18 @@ import Carousel from '@/app/common/Carousel';
 export default async function Picture({ params }: { params: { picture: string, id: string } }) {
   const S3 = getS3();
 
-  const description = await getDescription(S3, `exhibitions/${params.id}/${decodeURIComponent(params.picture)}/description.txt`);
+  const { id, picture } = await params;
+  const description = await getDescription(S3, `exhibitions/${decodeURIComponent(id)}/${decodeURIComponent(picture)}/description.txt`);
 
   if (!description) {
-    redirect(`/exhibitions/${params.id}`);
+    redirect(`/exhibitions/${decodeURIComponent(id)}`);
     return null;
   }
   const textValues = description?.split('||') || [];
 
   const allFiles = await S3.send(new ListObjectsCommand({
     Bucket: process.env.AWS_BUCKET,
-    Prefix: `exhibitions/${params.id}/${decodeURIComponent(params.picture)}`,
+    Prefix: `exhibitions/${decodeURIComponent(id)}/${decodeURIComponent(picture)}`,
   }));
 
   const collectionImages: string[] = [];

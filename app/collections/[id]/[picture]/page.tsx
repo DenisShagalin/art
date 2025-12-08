@@ -7,10 +7,11 @@ import { redirect } from 'next/navigation';
 export default async function Picture({ params }: { params: { picture: string, id: string } }) {
   const S3 = getS3();
 
-  const description = await getDescription(S3, `collections/${params.id}/${decodeURIComponent(params.picture)}/description.txt`);
+  const { id, picture } = await params;
+  const description = await getDescription(S3, `collections/${decodeURIComponent(id)}/${decodeURIComponent(picture)}/description.txt`);
 
   if (!description) {
-    redirect(`/collections/${params.id}`);
+    redirect(`/collections/${decodeURIComponent(id)}`);
     return null;
   }
 
@@ -18,7 +19,7 @@ export default async function Picture({ params }: { params: { picture: string, i
 
   const allFiles = await S3.send(new ListObjectsCommand({
     Bucket: process.env.AWS_BUCKET,
-    Prefix: `collections/${params.id}/${decodeURIComponent(params.picture)}`,
+    Prefix: `collections/${decodeURIComponent(id)}/${decodeURIComponent(picture)}`,
   }));
 
   const collectionImages: string[] = [];

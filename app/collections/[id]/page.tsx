@@ -7,8 +7,9 @@ import './index.css';
 
 export default async function Collections({ params }: { params: { id: string } }) {
   const S3 = getS3();
+  const { id } = await params;
 
-  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `collections/${params.id}` }));
+  const collection = await S3.send(new ListObjectsCommand({ Bucket: process.env.AWS_BUCKET, Prefix: `collections/${id}` }));
   const collectionImages = [];
 
   for (let idx in collection.Contents) {
@@ -24,7 +25,7 @@ export default async function Collections({ params }: { params: { id: string } }
   let textValues = [];
 
   if (collectionImages.length!!) {
-    const description = await getDescription(S3, `collections/${params.id}/description.txt`);
+    const description = await getDescription(S3, `collections/${id}/description.txt`);
     textValues = description?.split('||') || [];
   }
 
@@ -39,7 +40,7 @@ export default async function Collections({ params }: { params: { id: string } }
       <Flex gap='middle' wrap>
         {collectionImages.map((image) => (
           <div key={image.name} className='image_wrap'>
-            <Link href={`/collections/${params.id}/${image.name}`}>
+            <Link href={`/collections/${id}/${image.name}`}>
               <img src={image.url} style={{ width: '100%' }} />
               <p className='img_description'>{image.name}</p>
             </Link>
